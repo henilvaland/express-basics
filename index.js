@@ -11,7 +11,16 @@ app.get('/', (req, res) => {
     res.send("server is working fine!!!");
 })
 
-app.get('/users', (req, res) => {
+const checkLogin = (req, res, next) => {
+    //http://localhost:3000/users?isLoggedin=true
+    if(req.query.isLoggedin === 'true'){
+        next();
+    } else {
+        res.status(401).json({message: "user is not logged in"});
+    }
+}
+
+app.get('/users', checkLogin,(req, res) => {
     res.json(users);
 })
 
